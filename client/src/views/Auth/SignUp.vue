@@ -5,9 +5,9 @@
         <v-card class="" outlined :loading="loading">
           <v-row class="justify-space-between px-4 pt-6 pb-12">
             <v-col cols="12" sm="12" md="6">
-              <v-card-title class="text-center">VueTube</v-card-title>
+              <v-card-title class="text-center">R.Hub</v-card-title>
               <v-card-subtitle class="mb-5"
-                >Create your VueTube account</v-card-subtitle
+                >Create your R.Hub account</v-card-subtitle
               >
               <v-card-text>
                 <ValidationObserver ref="form" v-slot="{ handleSubmit, reset }">
