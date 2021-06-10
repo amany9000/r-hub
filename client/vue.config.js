@@ -1,5 +1,5 @@
 module.exports = {
-  //"publicPath": '/r-hub/',
+  "publicPath": '/r-hub/',
   "transpileDependencies": [
     "vuetify"
   ]
