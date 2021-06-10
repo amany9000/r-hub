@@ -33,7 +33,7 @@
                       style="height: 100%; width: 100%"
                     >
                       <source
-                        :src="`${url}/uploads/videos/${video.url}`"
+                        :src="`${url}/api/v1/uploads/video/${video._id}`"
                         type="video/mp4"
                       />
                     </video>
@@ -82,7 +82,7 @@
                           {{ video.dislikes }}</v-btn
                         >
                         <v-btn
-                          :href="`${url}/uploads/videos/${video.url}`"
+                          :href="`${url}/api/v1/uploads/video/${video._id}`"
                           text
                           class="grey--text text--darken-1"
                           ><v-icon>mdi-download</v-icon> Download</v-btn
@@ -262,7 +262,7 @@
                           class="align-center"
                           height="110"
                           :src="
-                            `${url}/uploads/thumbnails/${video.thumbnailUrl}`
+                            `${url}/api/v1/uploads/thumbnail/${video.thumbnail}`
                           "
                         >
                         </v-img>
@@ -381,6 +381,7 @@ export default {
 
         if (!video) return this.$router.push('/')
         this.video = video.data.data
+        console.log("this.video", this.video)
       } catch (err) {
         this.errored = true
         console.log(err)

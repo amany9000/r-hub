@@ -60,7 +60,7 @@
                             <v-col cols="3" sm="2" md="5" lg="5">
                               <v-img
                                 class="align-center"
-                                :src="`${url}/uploads/thumbnails/${itemToDelete.thumbnailUrl}`"
+                                :src="`${url}/api/v1/uploads/thumbnail/${itemToDelete.thumbnail}`"
                               >
                               </v-img>
                             </v-col>

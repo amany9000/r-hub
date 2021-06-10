@@ -8,7 +8,7 @@
     :to="`/watch/${video._id}`"
   >
     <v-img
-      :src="`${url}/uploads/thumbnails/${video.thumbnailUrl}`"
+      :src="`${url}/api/v1/uploads/thumbnail/${video.thumbnail}`"
 
     ></v-img>
     <v-row no-gutters>

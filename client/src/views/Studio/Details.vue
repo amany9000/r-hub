@@ -170,7 +170,7 @@ export default {
       this.formData.description = video.description
       this.formData.visibility = video.status == 'draft' ? '' : video.status
       this.formData.category = video.categoryId.title
-      this.imgDataUrl = `${process.env.VUE_APP_URL}/uploads/thumbnails/${video.thumbnailUrl}`
+      this.imgDataUrl = `${process.env.VUE_APP_URL}/api/v1/uploads/thumbnail/${video.thumbnail}`
     },
     async submit() {
       // if (this.$route.name === 'Dashboard')

@@ -12,7 +12,7 @@ const VideoSchema = new Schema(
       type: String,
       default: ''
     },
-    thumbnailUrl: {
+    thumbnail: {
       type: String,
       default: 'no-photo.jpg'
     },

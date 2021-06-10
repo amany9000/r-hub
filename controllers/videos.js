@@ -2,9 +2,20 @@ const path = require('path')
 const fs = require('fs')
 const asyncHandler = require('../middleware/async')
 const ErrorResponse = require('../utils/errorResponse')
+const mongoose = require('mongoose')
+const DBConnection = require('../config/db')
+
+let Grid = require('gridfs-stream');
+const mongodb = require('mongodb');
+
+
+const getDB = async ()=>{
+  const conn = await DBConnection()
+  return conn.connection
+}
+
 
 const Video = require('../models/Video')
-
 // @desc    Get videos
 // @route   GET /api/v1/videos/public or /api/v1/videos/private
 // @access  Public Or Private
@@ -70,6 +81,21 @@ exports.videoUpload = asyncHandler(async (req, res, next) => {
         console.error(err)
         return next(new ErrorResponse(`Problem with video upload`, 500))
       }
+      console.log("1")
+
+      const db = await getDB();
+
+      console.log(2, db)
+      const bucket = new mongodb.GridFSBucket(db.db, {mode: "w"});
+      console.log(3)
+      // create upload stream using GridFS bucket
+      
+      console.log("video", video, `${process.env.FILE_UPLOAD_PATH}/videos/${video.name}`)
+      const videoUploadStream = bucket.openUploadStream(`${video.name}`);
+      console.log(4)
+      const videoReadStream = fs.createReadStream(`${process.env.FILE_UPLOAD_PATH}/videos/${video.name}`);
+      console.log(5)
+      videoReadStream.pipe(videoUploadStream);
 
       videoModel = await Video.findByIdAndUpdate(
         videoModel._id,
@@ -155,7 +181,18 @@ exports.uploadVideoThumbnail = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse(`Problem with file upload`, 500))
       }
 
-      await Video.findByIdAndUpdate(req.params.id, { thumbnailUrl: file.name })
+      const db = await getDB();
+
+      const bucket = new mongodb.GridFSBucket(db.db, {mode: "w"});
+
+      fs.createReadStream(`${process.env.FILE_UPLOAD_PATH}/thumbnails/${file.name}`).pipe(
+        bucket.openUploadStream(file.name)).on('error', function(error) {
+        console.log('Error:-', error);
+      }).on('finish', function() {
+        console.log('Thumbnail Save on DB!!');
+      });
+
+      await Video.findByIdAndUpdate(req.params.id, { thumbnail: file.name })
 
       res.status(200).json({ success: true, data: file.name })
     }
@@ -184,7 +221,7 @@ exports.deleteVideo = asyncHandler(async (req, res, next) => {
         )
       }
       fs.unlink(
-        `${process.env.FILE_UPLOAD_PATH}/thumbnails/${video.thumbnailUrl}`,
+        `${process.env.FILE_UPLOAD_PATH}/thumbnails/${video.thumbnail}`,
         async (err) => {
           // if (err) {
           //   return next(

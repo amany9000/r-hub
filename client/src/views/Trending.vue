@@ -25,7 +25,7 @@
                   <v-img
                     max-height="200"
                     class="align-center"
-                    :src="`${getUrl}/uploads/thumbnails/${video.thumbnailUrl}`"
+                    :src="`${getUrl}/api/v1/uploads/thumbnail/${video.thumbnail}`"
                   >
                   </v-img>
                   <!-- </v-responsive> -->

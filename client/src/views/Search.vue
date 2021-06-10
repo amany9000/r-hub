@@ -104,7 +104,7 @@
                     <v-img
                       class="align-center"
                       :src="
-                        `${getUrl}/uploads/thumbnails/${result.thumbnailUrl}`
+                        `${getUrl}/api/v1/uploads/thumbnail/${result.thumbnail}`
                       "
                       :alt="`${result.userId.channelName} avatar`"
                     >

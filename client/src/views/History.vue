@@ -37,7 +37,7 @@
                         <v-img
                           class="align-center"
                           :src="
-                            `${getUrl}/uploads/thumbnails/${history.videoId.thumbnailUrl}`
+                            `${getUrl}/api/v1/uploads/thumbnail/${history.videoId.thumbnail}`
                           "
                         >
                         </v-img>
