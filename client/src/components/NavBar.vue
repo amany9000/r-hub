@@ -19,9 +19,46 @@
         @click:append="search"
       ></v-text-field>
 
+
+      <v-menu offsetY>
+
+        <template v-slot:activator="{ on: menu }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn icon class="mr-7 ml-2" v-on="{ ...tooltip, ...menu }"
+                ><v-icon size="25">mdi-wallet</v-icon></v-btn
+              >
+            </template>
+            <span>You RBC Wallet</span>
+          </v-tooltip>
+        </template>
+        <v-list>
+          <v-list-item router to="/studio">
+            <v-list-item-icon class="mr-3"
+              ><v-icon>mdi-currency-inr</v-icon></v-list-item-icon
+            >
+            <v-list-item-title>Your Balance: <strong>3.1 RHC</strong></v-list-item-title>
+          </v-list-item>
+          <!-- <v-list-item>
+            <v-list-item-icon class="mr-3"
+              ><v-icon>mdi-access-point</v-icon></v-list-item-icon
+            >
+            <v-list-item-title>Go live</v-list-item-title>
+          </v-list-item> -->
+        </v-list>
+      </v-menu>
+
+
+
+
+
+
+
+
       <v-spacer></v-spacer>
 
       <v-menu offsetY>
+
         <template v-slot:activator="{ on: menu }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">

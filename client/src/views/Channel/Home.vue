@@ -118,7 +118,7 @@
               </v-card>
             </v-tab-item>
             <v-tab-item>
-              <v-card class="transparent" flat>
+              <v-card flat>
                 <v-card-title>Uploads</v-card-title>
                 <v-row>
                   <v-col
@@ -139,6 +139,22 @@
                     </v-skeleton-loader>
                   </v-col>
                 </v-row>
+              </v-card>
+            </v-tab-item>
+            <v-tab-item>
+            </v-tab-item>
+            <v-tab-item>
+            </v-tab-item>
+            <v-tab-item>
+              <v-card class="transparent" flat>
+            <v-data-table
+              no-data-text="No videos available, please upload video."
+              :headers="headers"
+              :items="videoRewards"
+              loading-text="Loading... Please wait"
+            >
+            </v-data-table>
+
               </v-card>
             </v-tab-item>
           </v-tabs-items>
@@ -163,6 +179,7 @@ import SubscriptionService from '@/services/SubscriptionService'
 import VideoCard from '@/components/VideoCard'
 import SigninModal from '@/components/SigninModal'
 
+
 export default {
   data: () => ({
     tab: null,
@@ -172,11 +189,25 @@ export default {
     subscribeLoading: false,
     showSubBtn: true,
     url: process.env.VUE_APP_URL,
-    items: ['Home', 'Videos', 'Playlists', 'Community', 'Channels', 'about'],
+    items: ['Home', 'Videos', 'Playlists', 'Keys', 'Rewards', 'about'],
     videos: {},
     channel: {},
     signinDialog: false,
-    details: {}
+    details: {},
+    headers: [
+      {
+        text: "Video",
+        align: "start",
+        value: "title",
+      },
+      { text: "Visibility", value: "status" },
+      { text: "Views", value: "views" },
+      { text: "Reward", value: "reward" },
+      { text: "Value", value: "value" }
+    ],
+    videoRewards: [{
+      title: "Eternals"
+    }]
   }),
   computed: {
     ...mapGetters(['isAuthenticated', 'currentUser'])
@@ -186,6 +217,30 @@ export default {
     SigninModal
   },
   methods: {
+    async getVideoRewards() {
+      this.loading = true;
+
+      const videos = await VideoService.getAll("private", { limit: 0 })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.loading = false));
+
+      if (!videos) return;
+      // console.log(videos)
+      this.videoRewards = videos.data.data;
+
+      // Coin is RBC R-hub Coin
+      // Reward pe view is 0.01 coin
+      // 1 Coin = 90 Rs
+
+      this.videoRewards.map((videoReward) => {
+        videoReward["reward"] = `${(videoReward['views'] * 0.01).toFixed(2)} RBC`
+        videoReward["value"] = `${(videoReward['views'] * 0.01 * 90).toFixed(2)} INR`
+      })
+    },
+
+
     async getChannel(id) {
       // console.log(this.$route.params.id)
       this.loading = true
@@ -208,6 +263,7 @@ export default {
         this.showSubBtn = true
       }
       this.getVideos()
+      this.getVideoRewards()
 
       this.checkSubscription(this.channel._id)
       // console.log(channel)
