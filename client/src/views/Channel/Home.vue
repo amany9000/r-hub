@@ -310,6 +310,9 @@
   </v-card>
             </v-tab-item>
             <v-tab-item>
+            <v-card-title class="grey white--text text-h5">
+                Your Video Rewards
+            </v-card-title>
               <v-card class="transparent" flat>
             <v-data-table
               no-data-text="No videos available, please upload video."
@@ -437,7 +440,7 @@ export default {
 
   copyToClipboard () {
   const el = document.createElement('textarea');
-  el.value = this.users[0].key;
+  el.value = this.selected.key
   document.body.appendChild(el);
   el.select();
   document.execCommand('copy');
